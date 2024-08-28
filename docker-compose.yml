@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  docker-mysql:
+   image: mysql
+   restart: always
+   container_name: git-mysql
+   ports:
+    - 3306:3306
+   environment:
+     MYSQL_DATABASE: gitrepoanalysis
+     MYSQL_ROOT_PASSWORD: root
+   volumes:
+    - ./sql_docker/dump:/docker-entrypoint-initdb.d
+
+  web:
+    build: ./gitreposerver/python_api/
+    ports:
+      - "5000:5000"
+  redis:
+    image: "redis:alpine"
+
+  git_repo_server:
+    build: ./gitreposerver/
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://docker-mysql:3306/gitrepoanalysis?autoReconnect=true&useSSL=false
+    depends_on:
+      - docker-mysql
+    ports:
+      - "8080:8080"

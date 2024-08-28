@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Git Analysis</title>
+</head>
+<body>
+
+    <div>
+        <form th:action="@{/searchInformation}">
+            <input type="text" name="repoLink" placeholder="Input your git repo link" />
+            <button>Analysis</button>
+        </form>
+    </div>
+    <div th:if="${check}">
+    <div th:object = "${GitRepo}">
+        <h3>Repo Id: </h3><p th:text="*{repoID}"/>
+        <h3>Commit Count: </h3><p th:text="*{commitCount}"/>
+        <h3>Commit Dates: </h3>
+        <div th:each="date:${DateList}">
+        <p th:text="${date}"/>
+        </div>
+        <h3>Total lines added: </h3><p th:text="*{linesAdded}"/>
+        <h3>Total lines removed: </h3><p th:text="*{linesRemoved}"/>
+        <h3>Max Change Sets: </h3><p th:text="*{maxChangeSets}"/>
+        <h3>Average Change Sets: </h3><p th:text="*{avgChangeSets}"/>
+        <h3>Max Code Churn: </h3><p th:text="*{maxCodeChurn}"/>
+        <h3>Average Code Churn: </h3><p th:text="*{avgCodeChurn}"/>
+        <h3>Contributors Count: </h3><p th:text="*{contributorsCount}"/>
+        <h3>Minor Contributors Count: </h3><p th:text="*{minorContributorsCount}"/>
+        <h3>Contributions Percentage: </h3>
+        <div th:each="contribute:${ContributionsMap}">
+            <h4>Name: </h4><p th:text="${contribute.key}"/>
+            <h4>Contribution Percent: </h4><p th:text="${contribute.value}"/>
+            <h3>----------------------</h3>
+        </div>
+        <h3>Hunks Count: </h3><p th:text="*{hunksCount}"/>
+    </div>
+    </div>
+
+
+
+    <div th:if="${wrongLink}">
+        <h1>Can't find this repo from GIT</h1>
+    </div>
+
+    <div th:if="!${check} and !${wrongLink}">
+        <h1>Please input the repo link</h1>
+    </div>
+
+
+</body>
+</html>

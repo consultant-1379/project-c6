@@ -1,0 +1,6 @@
+mvn sonar:sonar \
+  -Dsonar.projectKey=git_repo \
+  -Dsonar.host.url=http://localhost:9000 \
+  -Dsonar.login=53744079d1b0c6adf7fd96666c4e4352c3def975
+
+# Command for Kevin
